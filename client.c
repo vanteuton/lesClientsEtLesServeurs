@@ -120,7 +120,7 @@ int main(int argc, char *argv[]){
   	//affichage du resultat
 		switch(requete.choix){
 			case 1:
-				printf("Le resultat est %s  \n \n", (char)resultat.resNbPremier == 1 ? "premier" :"non premier");
+				printf("Le nombre choisi est %s  \n \n", (char)resultat.resNbPremier == 1 ? "premier" :"non premier");
 				break;
 			case 2:
 				printf("Le resultat est %.2f  \n", resultat.resCercle);
