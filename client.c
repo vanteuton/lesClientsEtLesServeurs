@@ -11,46 +11,83 @@
 // definition des message de structures request et response
 // partage de l'identifiant externe de la file, CLE = 142 
   
-int main(void){
+ // char * to int c
+int string2int(char stringNumber[]) {
+  // 1.
+  if (!stringNumber) {
+    printf("Parameter error\n");
+    return 0;
+  }
+  int number = 0;
+  int i = 0;
+ 
+  // 3.
+  int stringLength = strlen(stringNumber);
+ 
+  while (i < stringLength) {
+    int digit = stringNumber[i] - '0';
+    if (digit < 0 || digit > 9) {
+      printf("Invalid character '%c' on the position '%d'\n", stringNumber[i],(i));
+      return 0;
+    }
+    number *= 10;
+    number += digit;
+    i++;
+  }
+ 
+  return number;
+  
+}
+ 
+float stringToFloat(char *string)
+{
+    float result= 0.0;
+    int len = strlen(string);
+    int dotPosition = 0;
+
+    for (int i = 0; i < len; i++)
+    {
+        if (string[i] == '.')
+        {
+          dotPosition = len - i  - 1;
+        }
+        else
+        {
+          result = result * 10.0 + (string[i]-'0');
+        }
+      }
+
+      while (dotPosition--)
+      {
+        result /= 10.0;
+      }
+
+    return result;
+}
+ 
+int main(int argc, char *argv[]){
 	int msqid;
 	Request requete;
 	Response resultat;
 	
 	//ouverture de la file CLE
 	(msqid = msgget( (key_t) CLE, 0)) < 0 ? perror("msgget") : "";
-	
-	//menu
-	
-	int choixMenu = 0;	
-	printf("\n--------------------------------------------- \n");
-	printf("---------------      MENU      --------------\n");
-	printf("--------------------------------------------- \n \n");
-	printf("Que voulez vous effectuer \n");
-	printf("---- 1 Nombre premier \n");
-	printf("---- 2 Circonference Cercle \n");
-	printf("---- 3 Surface Cercle \n");
-	printf("Votre choix?\n\n");
-	scanf("%d", &choixMenu);
-	
-	printf("\n");
-	
   //On stock la valeur à calculer dans un champ différent pour permettre au serveur de déterminer le calcul à faire
-	switch (choixMenu) 
+	switch (string2int(argv[1])) 
 	{
 		case 1:
 			printf("Vous avez choisis le calcul des nombres premiers. \n");
 			requete.choix = 1;
 			//saisi au clavier
 			printf("Veuillez entrer un nombre. \n");
-			scanf("%d", &requete.nbPremier);
-						
+			requete.nbPremier = string2int(argv[2]);  
 			break;
 		case 2:
 			printf("Vous avez choisis le calcul de la circonference d'un cercle.\n");
 			//saisi au clavier
 			printf("Veuillez entrer un nombre\n");
 			requete.choix = 2;
-			scanf("%f", &requete.circCercle);
+			requete.circCercle = stringToFloat(argv[2]);
 			
 			break;
 		case 3:
@@ -58,7 +95,7 @@ int main(void){
 			//saisi au clavier
 			printf("Veuillez entrer un nombre\n");
 			requete.choix = 3;
-			scanf("%f", &requete.surfCercle);
+			requete.surfCercle = requete.circCercle = stringToFloat(argv[2]);
 			
 			break;
 		default:
