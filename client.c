@@ -76,26 +76,23 @@ int main(int argc, char *argv[]){
 	switch (string2int(argv[1])) 
 	{
 		case 1:
-			printf("Vous avez choisis le calcul des nombres premiers. \n");
+			printf("\n\nVous avez choisis le calcul des nombres premiers. \n\n");
 			requete.choix = 1;
-			//saisi au clavier
-			printf("Veuillez entrer un nombre. \n");
 			requete.nbPremier = string2int(argv[2]);  
+			printf("Nombre entré : %d\n\n", requete.nbPremier);
 			break;
 		case 2:
-			printf("Vous avez choisis le calcul de la circonference d'un cercle.\n");
-			//saisi au clavier
-			printf("Veuillez entrer un nombre\n");
+			printf("\n\nVous avez choisis le calcul de la circonference d'un cercle.\n\n");
 			requete.choix = 2;
 			requete.circCercle = stringToFloat(argv[2]);
+			printf("Nombre entré : %.2f\n\n", requete.circCercle);
 			
 			break;
 		case 3:
-			printf("Vous avez choisis le calcul de la surface d'un cercle.\n");
-			//saisi au clavier
-			printf("Veuillez entrer un nombre\n");
+			printf("\n\nVous avez choisis le calcul de la surface d'un cercle.\n\n");
 			requete.choix = 3;
 			requete.surfCercle = requete.circCercle = stringToFloat(argv[2]);
+			printf("Nombre entré : %.2f\n\n", requete.surfCercle);
 			
 			break;
 		default:
@@ -107,15 +104,17 @@ int main(int argc, char *argv[]){
 		// utilisation du pid  du processus client 
 		// pour que le serveur puisse l'identifier de facon unique 
 		requete.PID = getpid(); // pour la reponse
+		printf("PID -> %d \n",requete.PID);
+		printf("msqid -> %d \n",msqid);
 		requete.type = 1;
 		
 		
 		//envoi du msg au serveur
 		// de taille structure Request - 4 (taille de la variable type, un long est code sur 4 octets ) 
 		msgsnd(msqid, &requete, sizeof(Request)-sizeof(long), 0) == -1 ? perror("msgsnd") : "";
-		
+		printf("msgsnd envoye\n");
 		msgrcv(msqid, &resultat, sizeof(Response)-sizeof(long), getpid(), 0) == -1 ? perror("msgrcv") : "";
-		
+		printf("msgrcv reçu\n");
 		//affichage du resultat
     printf("Réponse du serveur\n\n");
   	//affichage du resultat
