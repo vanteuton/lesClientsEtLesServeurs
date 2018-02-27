@@ -129,5 +129,7 @@ int main(int argc, char *argv[]){
 				printf("Le resultat est %.2f  \n", resultat.resSurfCercle);
 				break;
 		}
+	
+	msgctl((key_t) CLE,0,NULL);
 		return 0;
 	}
