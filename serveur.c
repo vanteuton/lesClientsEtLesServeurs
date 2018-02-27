@@ -101,5 +101,7 @@ int main() {
 			exit(3);
 		}
 	}
+	
+	msgctl((key_t) CLE,0,NULL);
 	return 0;
 }
